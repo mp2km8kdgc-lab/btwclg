@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Battle with Chill guy 💀</title>
+    <title>Battle with 奶龙 💀</title>
     <style>
         /* ========== 你的完整样式（一字未改） ========== */
         * {
@@ -759,7 +759,7 @@
     <div class="name-modal-overlay" id="name-modal">
         <div class="name-modal">
             <h2>⚔️ Welcome, Warrior!</h2>
-            <p>Enter your name to begin the battle with Chill guy</p>
+            <p>Enter your name to begin the battle with 奶龙</p>
             <input type="text" class="name-input" id="player-name-input" placeholder="Your name..." maxlength="12" value="Player">
             <button class="start-btn" onclick="startGame()">START BATTLE</button>
         </div>
@@ -767,7 +767,7 @@
 
     <!-- Game Title -->
     <header class="game-header">
-        <h1 class="game-title">🔥 Battle with Chill guy💀 🔥</h1>
+        <h1 class="game-title">🔥 Battle with 奶龙 💀 🔥</h1>
         <p class="subtitle">Only the strongest survive in the abyss</p>
     </header>
 
@@ -829,12 +829,12 @@
             <div class="turn-indicator turn-player" id="turn-indicator">🎯 Your Turn</div>
         </div>
 
-        <!-- Chill guy AI -->
+        <!-- 奶龙 AI -->
         <div class="player-card ai-side" id="ai-card">
             <div class="player-header">
                 <div class="player-avatar">🕶️</div>
                 <div>
-                    <div class="player-name">Chill guy</div>
+                    <div class="player-name">奶龙</div>
                     <div class="player-role">Abyss Lord</div>
                 </div>
             </div>
@@ -889,7 +889,7 @@
         <div class="log-entries" id="log-entries">
             <div class="log-entry log-system">
                 <span class="log-time">[00:00]</span>
-                Battle begins! Player vs Chill guy
+                Battle begins! Player vs 奶龙
             </div>
         </div>
     </div>
@@ -900,7 +900,7 @@
             <div class="modal-icon" id="modal-icon">🏆</div>
             <div class="modal-title" id="modal-title">Victory!</div>
             <div class="modal-desc" id="modal-desc">
-                You defeated Chill guy!<br>Human Warrior proved their strength once again.
+                You defeated 奶龙!<br>Human Warrior proved their strength once again.
             </div>
             <button class="restart-btn" onclick="restartGame()">🔄 Restart</button>
         </div>
@@ -934,7 +934,7 @@
             { name: 'Hellfire Rain', min: 30, max: 45, type: 'heavy', missChance: 0.35 }
         ];
 
-        const AI_ATTACK_IMAGE = 'https://i.imgflip.com/9au02y.jpg';
+        const AI_ATTACK_IMAGE = 'https://img.3dmgame.com/uploads/images/news/20260114/1768402480_341297.png';
 
         function random(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -967,7 +967,7 @@
             
             // 清空日志并添加新条目
             document.getElementById('log-entries').innerHTML = '';
-            addLog('system', `Battle begins! ${gameState.p1.name} vs Chill guy`);
+            addLog('system', `Battle begins! ${gameState.p1.name} vs 奶龙`);
             
             // 更新界面
             updateHp();
@@ -994,7 +994,7 @@
             // 更新日志中的名字
             const firstLog = document.querySelector('#log-entries .log-entry');
             if (firstLog) {
-                firstLog.innerHTML = `<span class="log-time">[${getCurrentTime()}]</span> Battle begins! ${name} vs Chill guy`;
+                firstLog.innerHTML = `<span class="log-time">[${getCurrentTime()}]</span> Battle begins! ${name} vs 奶龙`;
             }
             
             // 隐藏模态框
@@ -1018,7 +1018,7 @@
             const img = document.createElement('img');
             img.src = AI_ATTACK_IMAGE;
             img.className = 'ai-attack-image';
-            img.alt = 'Chill guy attack';
+            img.alt = '奶龙 attack';
             img.onerror = function() { this.remove(); };
             document.body.appendChild(img);
             setTimeout(() => img.remove(), 1200);
@@ -1155,7 +1155,7 @@
                 gameState.ai.hp -= burnDamage;
                 gameState.ai.burn--;
                 showDamage('ai', burnDamage);
-                addLog('system', `🔥 Chill guy takes burn damage, loses <span class="log-damage">${burnDamage}</span> HP`);
+                addLog('system', `🔥 奶龙 takes burn damage, loses <span class="log-damage">${burnDamage}</span> HP`);
                 updateHp();
                 updateStatus();
                 if (gameState.ai.hp <= 0) {
@@ -1166,7 +1166,7 @@
             
             if (gameState.ai.stun) {
                 gameState.ai.stun = false;
-                addLog('ai', '😵 Chill guy is stunned and cannot act!');
+                addLog('ai', '😵 奶龙 is stunned and cannot act!');
                 updateStatus();
                 endAiTurn();
                 return;
@@ -1277,14 +1277,14 @@
                 modal.className = 'modal-overlay modal-win';
                 icon.textContent = '🏆';
                 title.textContent = 'Victory!';
-                desc.innerHTML = `You defeated Chill guy!<br>After ${gameState.round} rounds of fierce battle, ${gameState.p1.name} proved their strength.<br><br>Final HP: ${gameState.p1.hp}/${gameState.p1.maxHp}`;
+                desc.innerHTML = `You defeated 奶龙!<br>After ${gameState.round} rounds of fierce battle, ${gameState.p1.name} proved their strength.<br><br>Final HP: ${gameState.p1.hp}/${gameState.p1.maxHp}`;
                 addLog('system', '🎉 Battle Over! Player wins!');
             } else {
                 modal.className = 'modal-overlay modal-lose';
                 icon.textContent = '💀';
                 title.textContent = 'Defeated...';
-                desc.innerHTML = `You were defeated by Chill guy...<br>The power of the Abyss Lord is beyond imagination.<br><br>Survived ${gameState.round} rounds`;
-                addLog('system', '💀 Battle Over... Chill guy wins...');
+                desc.innerHTML = `You were defeated by 奶龙...<br>The power of the Abyss Lord is beyond imagination.<br><br>Survived ${gameState.round} rounds`;
+                addLog('system', '💀 Battle Over... 奶龙 wins...');
             }
             setTimeout(() => modal.classList.add('active'), 500);
         }
