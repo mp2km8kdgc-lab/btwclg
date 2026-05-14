@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle with Chill guy💀</title>
+    <style>
+        /* ========== 你的完整样式（一字未改） ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0f;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Name input modal */
+        .name-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .name-modal {
+            background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+            border: 2px solid #3498db;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 40px rgba(52, 152, 219, 0.3);
+        }
+
+        .name-modal h2 {
+            color: #5dade2;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .name-modal p {
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 1px solid #444;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .name-input:focus {
+            border-color: #3498db;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #2980b9, #1a5276);
+            border: 1px solid #3498db;
+            color: #fff;
+            padding: 14px 50px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 2px;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Game header */
+        .game-header {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #0a0a0f 100%);
+            border-bottom: 2px solid #333;
+        }
+
+        .game-title {
+            font-size: 2.8em;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255, 50, 50, 0.5), 0 0 40px rgba(255, 0, 0, 0.3);
+            letter-spacing: 2px;
+            animation: titlePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { text-shadow: 0 0 20px rgba(255, 50, 50, 0.5), 0 0 40px rgba(255, 0, 0, 0.3); }
+            50% { text-shadow: 0 0 30px rgba(255, 80, 80, 0.8), 0 0 60px rgba(255, 30, 30, 0.5); }
+        }
+
+        .subtitle {
+            color: #888;
+            margin-top: 8px;
+            font-size: 0.95em;
+        }
+
+        /* Battle arena */
+        .battle-arena {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding: 30px 20px;
+            flex: 1;
+            gap: 20px;
+        }
+
+        /* Player cards */
+        .player-card {
+            background: linear-gradient(145deg, #16162a 0%, #0f0f1a 100%);
+            border-radius: 16px;
+            padding: 25px;
+            width: 420px;
+            border: 2px solid;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .player-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .player-card.player-side {
+            border-color: #3498db;
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.15);
+        }
+
+        .player-card.ai-side {
+            border-color: #e74c3c;
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.15);
+        }
+
+        .player-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .player-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            overflow: hidden;
+        }
+
+        .player-side .player-avatar {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .ai-side .player-avatar {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .player-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .player-name {
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .player-side .player-name {
+            color: #5dade2;
+        }
+
+        .ai-side .player-name {
+            color: #ec7063;
+        }
+
+        .player-role {
+            font-size: 0.8em;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        /* HP bars */
+        .hp-container {
+            margin-bottom: 20px;
+        }
+
+        .hp-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+
+        .hp-text {
+            color: #aaa;
+        }
+
+        .hp-value {
+            font-weight: bold;
+        }
+
+        .player-side .hp-value {
+            color: #5dade2;
+        }
+
+        .ai-side .hp-value {
+            color: #ec7063;
+        }
+
+        .hp-bar-bg {
+            height: 24px;
+            background: #1a1a2e;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .hp-bar {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.5s ease, background-color 0.3s;
+            position: relative;
+        }
+
+        .player-side .hp-bar {
+            background: linear-gradient(90deg, #3498db, #5dade2);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .ai-side .hp-bar {
+            background: linear-gradient(90deg, #e74c3c, #ec7063);
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+        }
+
+        .hp-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px 12px 0 0;
+        }
+
+        /* Status effects */
+        .status-effects {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            min-height: 28px;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: bold;
+            animation: statusPulse 1.5s infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .status-burn {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+
+        .status-poison {
+            background: rgba(155, 89, 182, 0.2);
+            color: #bb8fce;
+            border: 1px solid #bb8fce;
+        }
+
+        .status-shield {
+            background: rgba(52, 152, 219, 0.2);
+            color: #5dade2;
+            border: 1px solid #5dade2;
+        }
+
+        /* Attack buttons */
+        .attack-section {
+            border-top: 1px solid #333;
+            padding-top: 18px;
+        }
+
+        .section-title {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .attack-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .attack-btn {
+            background: linear-gradient(145deg, #1e1e3a, #16162a);
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 14px;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .attack-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            transition: width 0.2s;
+        }
+
+        .attack-btn:hover:not(:disabled) {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .attack-btn:active:not(:disabled) {
+            transform: translateY(-1px);
+        }
+
+        .attack-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .player-side .attack-btn::before {
+            background: #3498db;
+        }
+
+        .player-side .attack-btn:hover:not(:disabled) {
+            border-color: #3498db;
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.2);
+        }
+
+        .ai-side .attack-btn::before {
+            background: #e74c3c;
+        }
+
+        .ai-side .attack-btn:hover:not(:disabled) {
+            border-color: #e74c3c;
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.2);
+        }
+
+        .attack-name {
+            font-weight: bold;
+            font-size: 0.95em;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .attack-desc {
+            font-size: 0.78em;
+            color: #999;
+            display: block;
+        }
+
+        .attack-damage {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.8em;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .player-side .attack-damage {
+            color: #5dade2;
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .ai-side .attack-damage {
+            color: #ec7063;
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        /* VS divider */
+        .vs-divider {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+        }
+
+        .vs-text {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #555;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            animation: vsShake 3s ease-in-out infinite;
+        }
+
+        @keyframes vsShake {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .turn-indicator {
+            margin-top: 15px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .turn-player {
+            background: rgba(52, 152, 219, 0.15);
+            color: #5dade2;
+            border: 1px solid #3498db;
+        }
+
+        .turn-ai {
+            background: rgba(231, 76, 60, 0.15);
+            color: #ec7063;
+            border: 1px solid #e74c3c;
+        }
+
+        /* Battle log */
+        .battle-log {
+            background: #0f0f1a;
+            border-top: 2px solid #333;
+            padding: 20px;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .log-title {
+            font-size: 1.1em;
+            color: #aaa;
+            letter-spacing: 2px;
+        }
+
+        .log-count {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .log-entries {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .log-entry {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            animation: logSlide 0.3s ease;
+            border-left: 3px solid;
+        }
+
+        @keyframes logSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .log-player {
+            background: rgba(52, 152, 219, 0.08);
+            border-left-color: #3498db;
+            color: #aaddff;
+        }
+
+        .log-ai {
+            background: rgba(231, 76, 60, 0.08);
+            border-left-color: #e74c3c;
+            color: #ffaaaa;
+        }
+
+        .log-system {
+            background: rgba(155, 155, 155, 0.08);
+            border-left-color: #888;
+            color: #ccc;
+            font-style: italic;
+        }
+
+        .log-time {
+            color: #666;
+            font-size: 0.8em;
+            margin-right: 8px;
+        }
+
+        .log-damage {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .log-heal {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        /* Game over modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+            border: 2px solid;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            transform: scale(0.8);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-win .modal-content {
+            border-color: #3498db;
+            box-shadow: 0 0 40px rgba(52, 152, 219, 0.3);
+        }
+
+        .modal-lose .modal-content {
+            border-color: #e74c3c;
+            box-shadow: 0 0 40px rgba(231, 76, 60, 0.3);
+        }
+
+        .modal-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .modal-win .modal-title {
+            color: #5dade2;
+        }
+
+        .modal-lose .modal-title {
+            color: #ec7063;
+        }
+
+        .modal-desc {
+            color: #999;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #444, #333);
+            border: 1px solid #555;
+            color: #e0e0e0;
+            padding: 14px 40px;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 2px;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .modal-win .restart-btn {
+            background: linear-gradient(135deg, #2980b9, #1a5276);
+            border-color: #3498db;
+        }
+
+        .modal-lose .restart-btn {
+            background: linear-gradient(135deg, #c0392b, #922b21);
+            border-color: #e74c3c;
+        }
+
+        /* AI attack image popup - zoom in animation */
+        .ai-attack-image {
+            position: fixed;
+            z-index: 1500;
+            pointer-events: none;
+            animation: aiImageZoom 1.2s ease forwards;
+            border-radius: 12px;
+            box-shadow: 0 0 60px rgba(231, 76, 60, 0.6);
+        }
+
+        @keyframes aiImageZoom {
+            0% {
+                width: 80px;
+                height: 80px;
+                opacity: 0;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                width: 320px;
+                height: 320px;
+                opacity: 0;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* Damage popup */
+        .damage-popup {
+            position: fixed;
+            font-size: 2.5em;
+            font-weight: bold;
+            pointer-events: none;
+            animation: damageFloat 1s ease forwards;
+            z-index: 500;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        @keyframes damageFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-80px) scale(1.3);
+            }
+        }
+
+        /* Shake effect */
+        .shake {
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .battle-arena {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .player-card {
+                width: 100%;
+                max-width: 420px;
+            }
+            
+            .vs-divider {
+                padding: 15px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Name Input Modal -->
+    <div class="name-modal-overlay" id="name-modal">
+        <div class="name-modal">
+            <h2>⚔️ Welcome, Warrior!</h2>
+            <p>Enter your name to begin the battle with Chill guy</p>
+            <input type="text" class="name-input" id="player-name-input" placeholder="Your name..." maxlength="12" value="Player">
+            <button class="start-btn" onclick="startGame()">START BATTLE</button>
+        </div>
+    </div>
+
+    <!-- Game Title -->
+    <header class="game-header">
+        <h1 class="game-title">🔥 Battle with Chill guy💀 🔥</h1>
+        <p class="subtitle">Only the strongest survive in the abyss</p>
+    </header>
+
+    <!-- Battle Arena -->
+    <div class="battle-arena">
+        
+        <!-- Player -->
+        <div class="player-card player-side" id="p1-card">
+            <div class="player-header">
+                <div class="player-avatar" id="p1-avatar">⚔️</div>
+                <div>
+                    <div class="player-name" id="p1-display-name">Player</div>
+                    <div class="player-role">Human Warrior</div>
+                </div>
+            </div>
+            
+            <div class="hp-container">
+                <div class="hp-label">
+                    <span class="hp-text">HP</span>
+                    <span class="hp-value" id="p1-hp-text">100 / 100</span>
+                </div>
+                <div class="hp-bar-bg">
+                    <div class="hp-bar" id="p1-hp-bar" style="width: 100%"></div>
+                </div>
+            </div>
+            
+            <div class="status-effects" id="p1-status"></div>
+            
+            <div class="attack-section">
+                <div class="section-title">⚔️ Skills</div>
+                <div class="attack-buttons" id="p1-buttons">
+                    <button class="attack-btn" onclick="playerAttack('slash')" id="btn-slash">
+                        <span class="attack-name">⚔️ Slash</span>
+                        <span class="attack-desc">Quick sword strike, stable damage</span>
+                        <span class="attack-damage">15-20</span>
+                    </button>
+                    <button class="attack-btn" onclick="playerAttack('heavy')" id="btn-heavy">
+                        <span class="attack-name">🔨 Heavy Strike</span>
+                        <span class="attack-desc">Powerful blow, high damage but may miss</span>
+                        <span class="attack-damage">25-35</span>
+                    </button>
+                    <button class="attack-btn" onclick="playerAttack('fire')" id="btn-fire">
+                        <span class="attack-name">🔥 Flame Slash</span>
+                        <span class="attack-desc">Applies burn effect, DOT damage</span>
+                        <span class="attack-damage">10-15 + 🔥</span>
+                    </button>
+                    <button class="attack-btn" onclick="playerAttack('heal')" id="btn-heal">
+                        <span class="attack-name">💚 Heal</span>
+                        <span class="attack-desc">Restore HP, no damage</span>
+                        <span class="attack-damage">+20-30</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VS Divider -->
+        <div class="vs-divider">
+            <div class="vs-text">VS</div>
+            <div class="turn-indicator turn-player" id="turn-indicator">🎯 Your Turn</div>
+        </div>
+
+        <!-- Chill guy AI -->
+        <div class="player-card ai-side" id="ai-card">
+            <div class="player-header">
+                <div class="player-avatar">💀</div>
+                <div>
+                    <div class="player-name">Chill guy</div>
+                    <div class="player-role">Abyss Lord</div>
+                </div>
+            </div>
+            
+            <div class="hp-container">
+                <div class="hp-label">
+                    <span class="hp-text">HP</span>
+                    <span class="hp-value" id="ai-hp-text">150 / 150</span>
+                </div>
+                <div class="hp-bar-bg">
+                    <div class="hp-bar" id="ai-hp-bar" style="width: 100%"></div>
+                </div>
+            </div>
+            
+            <div class="status-effects" id="ai-status"></div>
+            
+            <div class="attack-section">
+                <div class="section-title">👿 Hell Skills</div>
+                <div class="attack-buttons" id="ai-buttons">
+                    <button class="attack-btn" disabled>
+                        <span class="attack-name">🩸 Blood Claw</span>
+                        <span class="attack-desc">Tear enemy with demon claws</span>
+                        <span class="attack-damage">18-25</span>
+                    </button>
+                    <button class="attack-btn" disabled>
+                        <span class="attack-name">💀 Death Gaze</span>
+                        <span class="attack-desc">Fearful eyes, may stun opponent</span>
+                        <span class="attack-damage">15-20 + 😵</span>
+                    </button>
+                    <button class="attack-btn" disabled>
+                        <span class="attack-name">☠️ Toxic Spray</span>
+                        <span class="attack-desc">Corrosive venom, DOT damage</span>
+                        <span class="attack-damage">12-18 + ☠️</span>
+                    </button>
+                    <button class="attack-btn" disabled>
+                        <span class="attack-name">🔥 Hellfire Rain</span>
+                        <span class="attack-desc">Summon meteors, devastating strike</span>
+                        <span class="attack-damage">30-45</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Battle Log -->
+    <div class="battle-log" id="battle-log">
+        <div class="log-header">
+            <span class="log-title">📜 Battle Log</span>
+            <span class="log-count" id="log-count">0 records</span>
+        </div>
+        <div class="log-entries" id="log-entries">
+            <div class="log-entry log-system">
+                <span class="log-time">[00:00]</span>
+                Battle begins! Player vs Chill guy
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div class="modal-overlay" id="game-modal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modal-icon">🏆</div>
+            <div class="modal-title" id="modal-title">Victory!</div>
+            <div class="modal-desc" id="modal-desc">
+                You defeated Chill guy!<br>Human Warrior proved their strength once again.
+            </div>
+            <button class="restart-btn" onclick="restartGame()">🔄 Restart</button>
+        </div>
+    </div>
+
+    <script>
+        // ========== 修复后的游戏逻辑（保留原有功能，修复开始按钮问题） ==========
+        
+        // 游戏状态
+        let gameState = {
+            p1: { hp: 100, maxHp: 100, burn: 0, poison: 0, stun: false, name: 'Player' },
+            ai: { hp: 150, maxHp: 150, burn: 0, poison: 0, stun: false },
+            turn: 'player',
+            gameOver: false,
+            round: 1,
+            logCount: 1
+        };
+
+        // 攻击配置
+        const attacks = {
+            slash: { name: 'Slash', min: 15, max: 20, type: 'normal' },
+            heavy: { name: 'Heavy Strike', min: 25, max: 35, type: 'heavy', missChance: 0.25 },
+            fire: { name: 'Flame Slash', min: 10, max: 15, type: 'burn', burnDuration: 3 },
+            heal: { name: 'Heal', min: 20, max: 30, type: 'heal' }
+        };
+
+        const aiAttacks = [
+            { name: 'Blood Claw', min: 18, max: 25, type: 'normal' },
+            { name: 'Death Gaze', min: 15, max: 20, type: 'stun', stunChance: 0.4 },
+            { name: 'Toxic Spray', min: 12, max: 18, type: 'poison', poisonDuration: 3 },
+            { name: 'Hellfire Rain', min: 30, max: 45, type: 'heavy', missChance: 0.35 }
+        ];
+
+        const AI_ATTACK_IMAGE = 'https://i.imgflip.com/9au02y.jpg';
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // 重置游戏（核心修复）
+        function resetGame(keepName = false) {
+            const oldName = gameState.p1.name;
+            gameState = {
+                p1: {
+                    hp: 100,
+                    maxHp: 100,
+                    burn: 0,
+                    poison: 0,
+                    stun: false,
+                    name: keepName ? oldName : 'Player'
+                },
+                ai: {
+                    hp: 150,
+                    maxHp: 150,
+                    burn: 0,
+                    poison: 0,
+                    stun: false
+                },
+                turn: 'player',
+                gameOver: false,
+                round: 1,
+                logCount: 0
+            };
+            
+            // 清空日志并添加新条目
+            document.getElementById('log-entries').innerHTML = '';
+            addLog('system', `Battle begins! ${gameState.p1.name} vs Chill guy`);
+            
+            // 更新界面
+            updateHp();
+            updateStatus();
+            updateTurnIndicator();
+            disablePlayerButtons(false);
+            
+            // 恢复血条颜色
+            document.getElementById('p1-hp-bar').style.background = 'linear-gradient(90deg, #3498db, #5dade2)';
+            document.getElementById('ai-hp-bar').style.background = 'linear-gradient(90deg, #e74c3c, #ec7063)';
+        }
+
+        // 开始游戏（由 START BATTLE 按钮调用）
+        function startGame() {
+            const input = document.getElementById('player-name-input');
+            let name = input.value.trim();
+            if (name === '') name = 'Player';
+            
+            // 重置游戏并设置名字
+            resetGame(false);
+            gameState.p1.name = name;
+            document.getElementById('p1-display-name').textContent = name;
+            
+            // 更新日志中的名字
+            const firstLog = document.querySelector('#log-entries .log-entry');
+            if (firstLog) {
+                firstLog.innerHTML = `<span class="log-time">[${getCurrentTime()}]</span> Battle begins! ${name} vs Chill guy`;
+            }
+            
+            // 隐藏模态框
+            const modal = document.getElementById('name-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+            
+            // 确保按钮可用
+            disablePlayerButtons(false);
+            gameState.gameOver = false;
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+        }
+
+        function showAiAttackImage() {
+            const img = document.createElement('img');
+            img.src = AI_ATTACK_IMAGE;
+            img.className = 'ai-attack-image';
+            img.alt = 'Chill guy attack';
+            img.onerror = function() { this.remove(); };
+            document.body.appendChild(img);
+            setTimeout(() => img.remove(), 1200);
+        }
+
+        function addLog(type, message) {
+            const time = `[${getCurrentTime()}]`;
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.innerHTML = `<span class="log-time">${time}</span>${message}`;
+            const container = document.getElementById('log-entries');
+            container.insertBefore(entry, container.firstChild);
+            gameState.logCount++;
+            document.getElementById('log-count').textContent = `${gameState.logCount} records`;
+        }
+
+        function updateHp() {
+            const p1Percent = (gameState.p1.hp / gameState.p1.maxHp) * 100;
+            const aiPercent = (gameState.ai.hp / gameState.ai.maxHp) * 100;
+            document.getElementById('p1-hp-bar').style.width = `${Math.max(0, p1Percent)}%`;
+            document.getElementById('ai-hp-bar').style.width = `${Math.max(0, aiPercent)}%`;
+            document.getElementById('p1-hp-text').textContent = `${Math.max(0, gameState.p1.hp)} / ${gameState.p1.maxHp}`;
+            document.getElementById('ai-hp-text').textContent = `${Math.max(0, gameState.ai.hp)} / ${gameState.ai.maxHp}`;
+        }
+
+        function updateStatus() {
+            const p1Status = document.getElementById('p1-status');
+            const aiStatus = document.getElementById('ai-status');
+            p1Status.innerHTML = '';
+            aiStatus.innerHTML = '';
+            
+            if (gameState.p1.burn > 0) p1Status.innerHTML += `<span class="status-badge status-burn">🔥 Burn ${gameState.p1.burn}t</span>`;
+            if (gameState.p1.poison > 0) p1Status.innerHTML += `<span class="status-badge status-poison">☠️ Poison ${gameState.p1.poison}t</span>`;
+            if (gameState.p1.stun) p1Status.innerHTML += `<span class="status-badge status-burn">😵 Stun</span>`;
+            
+            if (gameState.ai.burn > 0) aiStatus.innerHTML += `<span class="status-badge status-burn">🔥 Burn ${gameState.ai.burn}t</span>`;
+            if (gameState.ai.poison > 0) aiStatus.innerHTML += `<span class="status-badge status-poison">☠️ Poison ${gameState.ai.poison}t</span>`;
+            if (gameState.ai.stun) aiStatus.innerHTML += `<span class="status-badge status-burn">😵 Stun</span>`;
+        }
+
+        function showDamage(target, amount, isHeal = false) {
+            const card = document.getElementById(target === 'p1' ? 'p1-card' : 'ai-card');
+            const rect = card.getBoundingClientRect();
+            const popup = document.createElement('div');
+            popup.className = 'damage-popup';
+            popup.textContent = isHeal ? `+${amount}` : `-${amount}`;
+            popup.style.color = isHeal ? '#2ecc71' : '#e74c3c';
+            popup.style.left = `${rect.left + rect.width / 2 - 30}px`;
+            popup.style.top = `${rect.top + 80}px`;
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 1000);
+        }
+
+        function shakeCard(target) {
+            const card = document.getElementById(target === 'p1' ? 'p1-card' : 'ai-card');
+            card.classList.remove('shake');
+            void card.offsetWidth;
+            card.classList.add('shake');
+        }
+
+        // 玩家攻击
+        function playerAttack(attackType) {
+            if (gameState.gameOver || gameState.turn !== 'player') return;
+            
+            const attack = attacks[attackType];
+            const btn = document.getElementById(`btn-${attackType}`);
+            btn.style.transform = 'translateY(-8px)';
+            setTimeout(() => btn.style.transform = '', 150);
+            
+            let damage = 0;
+            let message = '';
+            
+            if (attack.type === 'heal') {
+                damage = random(attack.min, attack.max);
+                gameState.p1.hp = Math.min(gameState.p1.maxHp, gameState.p1.hp + damage);
+                showDamage('p1', damage, true);
+                message = `used <b>${attack.name}</b>, restored <span class="log-heal">${damage}</span> HP`;
+                addLog('player', message);
+                updateHp();
+                updateStatus();
+                gameState.turn = 'ai';
+                updateTurnIndicator();
+                disablePlayerButtons(true);
+                setTimeout(aiTurn, 1500);
+                return;
+            }
+            
+            // 非治疗攻击
+            if (attack.type === 'heavy' && Math.random() < attack.missChance) {
+                message = `used <b>${attack.name}</b>, but <span class="log-damage">MISS</span>!`;
+                addLog('player', message);
+            } else {
+                damage = random(attack.min, attack.max);
+                let isCrit = Math.random() < 0.15;
+                if (isCrit) {
+                    damage = Math.floor(damage * 1.5);
+                    message += '💥 <b>CRIT!</b> ';
+                }
+                gameState.ai.hp -= damage;
+                showDamage('ai', damage);
+                shakeCard('ai');
+                message += `used <b>${attack.name}</b>, dealt <span class="log-damage">${damage}</span> damage`;
+                if (attack.type === 'burn') {
+                    gameState.ai.burn = attack.burnDuration;
+                    message += ', applied <span class="log-damage">Burn</span>';
+                }
+                addLog('player', message);
+                updateHp();
+                updateStatus();
+            }
+            
+            if (gameState.ai.hp <= 0) {
+                gameState.ai.hp = 0;
+                updateHp();
+                endGame(true);
+                return;
+            }
+            
+            gameState.turn = 'ai';
+            updateTurnIndicator();
+            disablePlayerButtons(true);
+            setTimeout(aiTurn, 1500);
+        }
+
+        // AI 回合
+        function aiTurn() {
+            if (gameState.gameOver) return;
+            
+            showAiAttackImage();
+            
+            // AI 自身 DOT 结算
+            if (gameState.ai.burn > 0) {
+                const burnDamage = 8;
+                gameState.ai.hp -= burnDamage;
+                gameState.ai.burn--;
+                showDamage('ai', burnDamage);
+                addLog('system', `🔥 Chill guy takes burn damage, loses <span class="log-damage">${burnDamage}</span> HP`);
+                updateHp();
+                updateStatus();
+                if (gameState.ai.hp <= 0) {
+                    endGame(true);
+                    return;
+                }
+            }
+            
+            if (gameState.ai.stun) {
+                gameState.ai.stun = false;
+                addLog('ai', '😵 Chill guy is stunned and cannot act!');
+                updateStatus();
+                endAiTurn();
+                return;
+            }
+            
+            const attack = aiAttacks[random(0, aiAttacks.length - 1)];
+            let damage = 0;
+            let message = '';
+            
+            if (attack.type === 'heavy' && Math.random() < (attack.missChance || 0)) {
+                message = `used <b>${attack.name}</b>, but <span class="log-damage">MISS</span>!`;
+                addLog('ai', message);
+            } else {
+                damage = random(attack.min, attack.max);
+                let isCrit = Math.random() < 0.2;
+                if (isCrit) {
+                    damage = Math.floor(damage * 1.5);
+                    message += '💀 <b>Lord CRIT!</b> ';
+                }
+                gameState.p1.hp -= damage;
+                showDamage('p1', damage);
+                shakeCard('p1');
+                message += `used <b>${attack.name}</b>, dealt <span class="log-damage">${damage}</span> damage`;
+                if (attack.type === 'stun' && Math.random() < (attack.stunChance || 0)) {
+                    gameState.p1.stun = true;
+                    message += ', caused <span class="log-damage">Stun</span>';
+                }
+                if (attack.type === 'poison') {
+                    gameState.p1.poison = attack.poisonDuration || 3;
+                    message += ', applied <span class="log-damage">Poison</span>';
+                }
+                addLog('ai', message);
+                updateHp();
+                updateStatus();
+            }
+            
+            if (gameState.p1.hp <= 0) {
+                endGame(false);
+                return;
+            }
+            
+            endAiTurn();
+        }
+
+        function endAiTurn() {
+            setTimeout(() => {
+                let dotMessage = [];
+                if (gameState.p1.burn > 0) {
+                    const dmg = 8;
+                    gameState.p1.hp -= dmg;
+                    gameState.p1.burn--;
+                    showDamage('p1', dmg);
+                    dotMessage.push(`🔥 Burn -${dmg}`);
+                }
+                if (gameState.p1.poison > 0) {
+                    const dmg = 6;
+                    gameState.p1.hp -= dmg;
+                    gameState.p1.poison--;
+                    showDamage('p1', dmg);
+                    dotMessage.push(`☠️ Poison -${dmg}`);
+                }
+                if (dotMessage.length > 0) addLog('system', `DOT: ${dotMessage.join(', ')}`);
+                updateHp();
+                updateStatus();
+                if (gameState.p1.hp <= 0) {
+                    endGame(false);
+                    return;
+                }
+                if (gameState.p1.stun) {
+                    gameState.p1.stun = false;
+                    addLog('system', '😵 Stun removed!');
+                    updateStatus();
+                }
+                gameState.turn = 'player';
+                gameState.round++;
+                updateTurnIndicator();
+                disablePlayerButtons(false);
+            }, 800);
+        }
+
+        function updateTurnIndicator() {
+            const indicator = document.getElementById('turn-indicator');
+            if (gameState.turn === 'player') {
+                indicator.className = 'turn-indicator turn-player';
+                indicator.textContent = '🎯 Your Turn';
+            } else {
+                indicator.className = 'turn-indicator turn-ai';
+                indicator.textContent = '👿 AI Turn';
+            }
+        }
+
+        function disablePlayerButtons(disabled) {
+            const btns = document.querySelectorAll('#p1-buttons .attack-btn');
+            btns.forEach(btn => {
+                btn.disabled = disabled;
+                btn.style.opacity = disabled ? '0.4' : '1';
+            });
+        }
+
+        function endGame(playerWin) {
+            gameState.gameOver = true;
+            const modal = document.getElementById('game-modal');
+            const icon = document.getElementById('modal-icon');
+            const title = document.getElementById('modal-title');
+            const desc = document.getElementById('modal-desc');
+            
+            if (playerWin) {
+                modal.className = 'modal-overlay modal-win';
+                icon.textContent = '🏆';
+                title.textContent = 'Victory!';
+                desc.innerHTML = `You defeated Chill guy!<br>After ${gameState.round} rounds of fierce battle, ${gameState.p1.name} proved their strength.<br><br>Final HP: ${gameState.p1.hp}/${gameState.p1.maxHp}`;
+                addLog('system', '🎉 Battle Over! Player wins!');
+            } else {
+                modal.className = 'modal-overlay modal-lose';
+                icon.textContent = '💀';
+                title.textContent = 'Defeated...';
+                desc.innerHTML = `You were defeated by Chill guy...<br>The power of the Abyss Lord is beyond imagination.<br><br>Survived ${gameState.round} rounds`;
+                addLog('system', '💀 Battle Over... Chill guy wins...');
+            }
+            setTimeout(() => modal.classList.add('active'), 500);
+        }
+
+        function restartGame() {
+            const name = gameState.p1.name;
+            resetGame(true);  // 保留名字
+            gameState.p1.name = name;
+            document.getElementById('p1-display-name').textContent = name;
+            document.getElementById('game-modal').classList.remove('active');
+        }
+
+        // 页面初始化
+        resetGame(false);
+        
+        // 回车开始
+        document.getElementById('player-name-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') startGame();
+        });
+    </script>
+
+</body>
+</html>
